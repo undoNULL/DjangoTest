@@ -12,4 +12,5 @@ class PostModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     title = models.CharField(max_length=50)
     author_id = models.CharField(max_length=50)
+    #author = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.TextField()
