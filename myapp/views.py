@@ -85,7 +85,7 @@ class PostSerializer(serializers.Serializer):
     post_id = serializers.IntegerField()
     created_at = serializers.DateTimeField()
     title = serializers.CharField()
-    author_id = serializers.CharField()
+    author = serializers.CharField(source='author.id')
     content = serializers.CharField()
 
 
@@ -103,8 +103,11 @@ class CreatePostAPIView(APIView):
             )
         try:
             post = create_post(serializer.data['title'], serializer.data['id'], serializer.data['content'])
-        except:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return Response(
+                status=status.HTTP_400_BAD_REQUEST, 
+                data={"error": str(e)}
+                )
         return Response(status=status.HTTP_200_OK, data=PostSerializer(post).data)
     
 
@@ -122,8 +125,13 @@ class GetAllPostAPIView(APIView):
         try:
             posts = get_all_post()
         except:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
-        return Response(status=status.HTTP_200_OK, data=PostSerializer(posts).data)   
+            return Response(
+            status=status.HTTP_400_BAD_REQUEST
+            )
+        return Response(
+        status=status.HTTP_200_OK, 
+        data=PostSerializer(posts).data
+        )   
 """
 
 class GetAllPostAPIView(APIView):
@@ -215,3 +223,4 @@ class GetPostByIdAPIView(APIView):
                 status=status.HTTP_400_BAD_REQUEST,
                 data={"error": str(e)}
             )
+            

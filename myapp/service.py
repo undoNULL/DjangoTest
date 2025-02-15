@@ -18,4 +18,5 @@ def get_post_by_title(title):
     return PostModel.objects.filter(title=title)
 
 def get_post_by_id(id):
-    return PostModel.objects.filter(author_id=id)
+    #return PostModel.objects.filter(author_id=id)
+    return PostModel.objects.filter(author__id=id)
